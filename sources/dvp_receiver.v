@@ -12,7 +12,9 @@ module dvp_receiver (
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 M_AXIS TLAST" *)
     output tlast,
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 M_AXIS TVALID" *)
-    output tvalid
+    output tvalid,
+    (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 M_AXIS TUSER" *)
+    output tuser
 );
 
 /*
