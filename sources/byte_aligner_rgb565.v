@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module ov5642_byte_aligner(
+module byte_aligner_rgb565(
     input pclk,
 
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 S_AXIS TDATA"  *) input [7:0] tdata_in,

@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module test_ov5642_interface();
+module test_dvp_receiver();
 
 reg [7:0] din = 0;
 reg href = 0;
@@ -12,7 +12,7 @@ always #5 clk = ~clk;
 
 wire [7:0] tdata;
 wire tlast, tvalid;
-ov5642_interface uut(
+dvp_receiver uut(
      .pclk(clk)
     ,.din(din)
     ,.href(href)
@@ -22,7 +22,7 @@ ov5642_interface uut(
     ,.tvalid(tvalid)
 );
 
-ov5642_byte_aligner ba(
+byte_aligner_rgb565 ba(
      .pclk(clk)
     ,.tdata_in(tdata)
     ,.tlast_in(tlast)
