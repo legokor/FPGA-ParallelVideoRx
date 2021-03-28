@@ -24,17 +24,7 @@ wire clk;
 assign clk = pclk;
 
 /*
- * Detect VSYNC posedge
- */
-reg prev_vsync;
-always @(posedge clk)
-    prev_vsync <= vsync;
-
-wire vsync_posedge;
-assign vsync_posedge = vsync & prev_vsync;
-
-/*
- * Store incmoing data
+ * Store incoming data
  */
 reg [7:0] dreg;
 
@@ -43,21 +33,26 @@ always @(posedge clk)
         dreg <= din;
 
 reg dreg_valid;
-
 always @(posedge clk)
-    if (href)
-        dreg_valid <= 1'b1;
-    else if (vsync_posedge)
-        dreg_valid <= 1'b0;
+    dreg_valid <= href;
+
+/*
+ * Start-of-Frame is active until the first byte after a VSYNC pulse
+ */
+reg sof;
+always @(posedge clk)
+    if (vsync)
+        sof <= 1'b1;
+    else if (dreg_valid)
+        sof <= 1'b0;
+
 
 /*
  * Set stream outputs
  */
-assign tdata = dreg;                                    // the last received byte is transmitted
-
-assign tlast = vsync_posedge & dreg_valid;              // the last pixel is transmitted when VSYNC is received
-
-assign tvalid = dreg_valid & (href | vsync_posedge);    // the output is valid when dreg has valid data,
-                                                        // and either the next row started, or vsync was asserted
+assign tdata = dreg;
+assign tlast = dreg_valid & ~href;             // Activate TLAST when HREF ends
+assign tvalid = dreg_valid;
+assign tuser = sof & dreg_valid;               // Activate SOF only for a single transaction
 
 endmodule
