@@ -4,12 +4,14 @@ module dvp_receiver #(
     parameter VSYNC_ACTIVE_HIGH = 0,
     parameter HREF_ACTIVE_HIGH = 1
 ) (
+    (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME pclk, ASSOCIATED_BUSIF M_AXIS_VIDEO" *)
+    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 pclk CLK" *)
     input pclk,
+
     input [7:0] din,
     input href_in,
     input vsync_in,
 
-    (* X_INTERFACE_PARAMETER = "CLK_DOMAIN pclk" *)
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 M_AXIS_VIDEO TDATA" *)
     output [7:0] tdata,
     (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 M_AXIS_VIDEO TLAST" *)
